@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
+import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Pokemon } from '../class/pokemon';
 
@@ -34,18 +35,8 @@ export class PokemonesService {
       });
   }
 
-  getPokemonById(id: number) {
-
+  getPokemonById(id: number): Observable<any> {
     const url = `${this.baseUrl}${id}`;
-    this.http.get(url).toPromise();
-    /*
-      .then(response => {
-        return {
-          id: id,
-          name: response.json().name,
-          sprite: `${this.baseSpriteUrl}${id}.png`,
-
-        };
-      });*/
+    return this.http.get(url);
   }
 }

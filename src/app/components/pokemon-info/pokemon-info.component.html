@@ -1,2 +1,13 @@
-<p>El id es: {{num}}</p>
-<a [routerLink]="['/pokemones']">  &larr; Volver</a>
+
+<div>
+    <a [routerLink]="['/pokemones']">  &larr; Volver</a>
+</div>
+<div>
+    <p>El id es: {{num}}</p>
+    <p>nombre: {{pokemonById?.name}}</p>
+    <div>
+            <img src={{pokemonById?.sprites.front_default}}>    
+        <img src={{pokemonById?.sprites.back_default}}>
+    </div>
+    
+</div>
