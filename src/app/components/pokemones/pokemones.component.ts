@@ -7,8 +7,7 @@ import { Pokemon } from '../../class/pokemon';
   templateUrl: './pokemones.component.html',
   styleUrls: ['./pokemones.component.css']
 })
-export class PokemonesComponent implements OnInit {
-  
+export class PokemonesComponent implements OnInit {  
     pokemon: Pokemon[] = [];
     isLoading = false;
     error = false;
@@ -16,6 +15,17 @@ export class PokemonesComponent implements OnInit {
     constructor(private pokedexService: PokemonesService) { }
   
     ngOnInit() {
+      this.pokedexService.pokemonChange$.subscribe(
+        (pokemons: Pokemon[]) => {
+          this.pokemon = pokemons;
+          this.isLoading = false;
+          this.error = false;
+        },
+        (err) => {
+          this.error = true;
+          this.isLoading = false;
+        }
+      )
       this.loadMore();
     }
   
@@ -23,19 +33,6 @@ export class PokemonesComponent implements OnInit {
       this.isLoading = true;
   
       /* this.pokedexService.getPokemonById(5) */
-      this.pokedexService.getPokemons(this.pokemon.length, 3)
-        .then(pokemon => {
-          pokemon = pokemon.map(p => {
-            p.imageLoaded = false;
-            return p;
-          });
-          this.pokemon = this.pokemon.concat(pokemon);
-          this.isLoading = false;
-          this.error = false;
-        })
-        .catch(() => {
-          this.error = true;
-          this.isLoading = false;
-        });
+      this.pokedexService.getPokemons(this.pokemon.length, 9);
     }
   }

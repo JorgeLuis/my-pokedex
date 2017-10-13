@@ -1,9 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Pokemon } from '../class/pokemon';
 
 @Injectable()
 export class PokemonesService {
+  pokemon: Pokemon[] = [];
+  private _changePokemon = new BehaviorSubject<Pokemon[]>(this.pokemon);
+  
+  pokemonChange$ = this._changePokemon.asObservable();
 
   private baseUrl = 'https://pokeapi.co/api/v2/pokemon/';
   private baseSpriteUrl = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/';
@@ -14,23 +20,25 @@ export class PokemonesService {
 
       .toPromise()
       .then(response => response.json().results)
-      .then(items => items.map((item, idx) => {
-
-        const id: number = idx + offset + 1;
-
-        return {
-          name: item.name,
-          sprite: `${this.baseSpriteUrl}${id}.png`,
-          id
-        };
-      }));
+      .then(items => {
+        items.map((item, idx) => {
+          let poke : Pokemon = {
+            id : idx + offset + 1,
+            name : item.name,
+            sprite : this.baseSpriteUrl + (idx + offset + 1) + '.png',
+            imageLoaded: false
+          }
+          this.pokemon.push(poke);
+          });
+          this._changePokemon.next(this.pokemon);
+      });
   }
 
   getPokemonById(id: number) {
 
     const url = `${this.baseUrl}${id}`;
-    this.http.get(url)
-      .toPromise()
+    this.http.get(url).toPromise();
+    /*
       .then(response => {
         return {
           id: id,
@@ -38,6 +46,6 @@ export class PokemonesService {
           sprite: `${this.baseSpriteUrl}${id}.png`,
 
         };
-      });
+      });*/
   }
 }
