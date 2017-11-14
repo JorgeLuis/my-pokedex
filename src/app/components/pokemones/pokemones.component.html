@@ -2,24 +2,30 @@
 <hr>
 <div class="row">
   <div class="col-md-4" *ngFor="let p of pokemon" style="text-align: center;">
-    <mat-card>
+    <mat-card appAppHightlight>
       <div class="panel-heading">
         <b>#{{ p.id }} - {{ p.name|capitalize }} </b>
       </div>
       <a [routerLink]="['/pokemon',p.id]">
-        <img [hidden]="!p.imageLoaded" class="pokedex-pokemon-sprite" (load)="p.imageLoaded = true" [src]="p.sprite">
+        <img [hidden]="!p.imageLoaded" class=" .img-circle pokedex-pokemon-sprite" (load)="p.imageLoaded = true" [src]="p.sprite">
       </a>
     </mat-card>
     <br>
   </div>
 </div>
 
-<button class="load-button" (click)="loadMore()" [disabled]="isLoading">
-  <span *ngIf="!error">
-    <span *ngIf="isLoading">Buscando...</span>
-    <span *ngIf="!isLoading">Buscar</span>
-  </span>
-  <span *ngIf="error">
-    Error en la POKEAPI -_-
-  </span>
-</button>
+<div style="text-align: -webkit-center;">
+  <button mat-raised-button color="warn" (click)="loadMore()" [disabled]="isLoading" >
+    <span *ngIf="!error">
+      <span *ngIf="isLoading">
+        <b>Buscando...</b>
+      </span>
+      <span *ngIf="!isLoading">
+        <b>Buscar Pokemons </b>
+      </span>
+    </span>
+    <span *ngIf="error">
+      Error en la POKEAPI -_-
+    </span>
+  </button>
+</div>

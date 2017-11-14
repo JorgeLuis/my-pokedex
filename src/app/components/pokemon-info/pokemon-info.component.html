@@ -1,13 +1,20 @@
-
-<div>
-    <a [routerLink]="['/pokemones']">  &larr; Volver</a>
-</div>
-<div>
-    <p>El id es: {{num}}</p>
-    <p>nombre: {{pokemonById?.name}}</p>
-    <div>
-            <img src={{pokemonById?.sprites.front_default}}>    
-        <img src={{pokemonById?.sprites.back_default}}>
+<div   *ngIf="pokemonById">
+    <div style="text-align: -webkit-center;">
+        <h1> Número #{{num}} </h1>
+        <h1> {{pokemonById?.name |capitalize}}</h1>
+        <div>
+            <img src={{this.urlImage}}>
+            <img src={{pokemonById?.sprites.front_default}}>
+            <img src={{pokemonById?.sprites.back_default}}>
+        </div>
+        <h2>Tipo:
+            <b>{{pokemonById?.types[0].type.name |capitalize}}</b>
+        </h2>
     </div>
     
+    <button mat-fab color="warn" [routerLink]="['/pokemones']">
+        <mat-icon>arrow_back</mat-icon>
+    </button>
+
 </div>
+
